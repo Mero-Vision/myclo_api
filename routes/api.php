@@ -27,9 +27,9 @@ Route::get('brand', [BrandController::class, 'index']);
 Route::get('products', [ProductController::class, 'index']);
 Route::get('all-products', [ProductController::class, 'allProducts']);
 
-$middleware = Auth::guard('api')->user() ? ['auth:api'] : [];
-Route::get('brand/{slug}', [BrandController::class, 'show'])->middleware($middleware);
-Route::get('products/{slug}', [ProductController::class, 'show'])->middleware($middleware);
+// $middleware = Auth::guard('api')->user() ? ['auth:api'] : [];
+// Route::get('brand/{slug}', [BrandController::class, 'show'])->middleware($middleware);
+// Route::get('products/{slug}', [ProductController::class, 'show'])->middleware($middleware);
 
 
 
