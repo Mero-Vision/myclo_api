@@ -24,9 +24,9 @@ class AuthController extends Controller
             if (Auth::attempt(['email' => $email, 'password' => $password])) {
                 $user = Auth()->user();
                 if ($user->hasRole(User::CUSTOMER)) {
-                    if ($user->email_verified_at == null) {
-                        return responseError('The email is not verified!', 500);
-                    }
+                    // if ($user->email_verified_at == null) {
+                    //     return responseError('The email is not verified!', 500);
+                    // }
 
                     $token = $user->createToken('login_token')->accessToken;
 

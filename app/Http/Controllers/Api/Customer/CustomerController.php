@@ -80,17 +80,17 @@ class CustomerController extends Controller
                 ]);
 
                 $customer->assignRole(User::CUSTOMER);
-                $token = Str::random(60);
+                // $token = Str::random(60);
 
-                AccountVerificationToken::where('email', $customer->email)->delete();
+                // AccountVerificationToken::where('email', $customer->email)->delete();
 
-                AccountVerificationToken::create([
-                    'email' => $customer->email,
-                    'token' => $token,
-                    'expire_at' => Carbon::now()->addMinutes(30),
-                ]);
+                // AccountVerificationToken::create([
+                //     'email' => $customer->email,
+                //     'token' => $token,
+                //     'expire_at' => Carbon::now()->addMinutes(30),
+                // ]);
 
-                Mail::to($request->email)->send(new CustomerSignUpMail($customer, $token));
+                // Mail::to($request->email)->send(new CustomerSignUpMail($customer, $token));
 
                 return $customer;
             });
