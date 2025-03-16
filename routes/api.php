@@ -25,7 +25,7 @@ Route::get('category/{slug}', [CategoryController::class, 'show']);
 Route::get('brand', [BrandController::class, 'index']);
 
 Route::get('products', [ProductController::class, 'index']);
-Route::get('all-products', [ProductController::class, 'allProducts']);
+
 
 // $middleware = Auth::guard('api')->user() ? ['auth:api'] : [];
 // Route::get('brand/{slug}', [BrandController::class, 'show'])->middleware($middleware);
@@ -60,4 +60,7 @@ Route::middleware(['auth:api'])->group(function () {
     
     Route::get('orders', [OrderController::class, 'index']);
     Route::post('orders', [OrderController::class, 'store']);
+
+    Route::get('my-products', [ProductController::class, 'index']);
+
 });

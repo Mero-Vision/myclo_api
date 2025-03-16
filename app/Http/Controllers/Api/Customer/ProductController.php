@@ -23,10 +23,10 @@ class ProductController extends Controller
 
 
 
-        $products = Product::with('productImages', 'productVarients', 'productVarients.productVarientImages','category')->when($search_keyword, function ($query) use ($search_keyword) {
+        $products = Product::with('productImages', 'productVarients', 'productVarients.productVarientImages', 'category')->when($search_keyword, function ($query) use ($search_keyword) {
             $query->where('name', 'like', '%' . $search_keyword . '%');
-        })->when($limit,function($query) use($limit){
-                $query->limit($limit);
+        })->when($limit, function ($query) use ($limit) {
+            $query->limit($limit);
         })->latest();
 
         $pagination = $pagination_limit ? $products->paginate($pagination_limit) : $products->get();
@@ -34,14 +34,14 @@ class ProductController extends Controller
         return ProductResource::collection($pagination);
     }
 
-    public function allProducts()
+    public function myproducts()
     {
 
         $pagination_limit = request()->query('pagination_limit');
         $search_keyword = request()->query('search_keyword');
 
 
-        $products = Product::with('productImages', 'productVarients', 'productVarients.productVarientImages','category')->when($search_keyword, function ($query) use ($search_keyword) {
+        $products = Product::with('productImages', 'productVarients', 'productVarients.productVarientImages', 'category')->where('client_id',Auth::user()->id)->when($search_keyword, function ($query) use ($search_keyword) {
             $query->where('name', 'like', '%' . $search_keyword . '%');
         })->latest();
 
@@ -49,10 +49,10 @@ class ProductController extends Controller
 
         return ProductResource::collection($pagination);
     }
-    
+
     public function show(string $slug)
     {
-        $product = Product::with('productImages', 'productVarients', 'productVarients.productVarientImages','category','brands')->where('slug', $slug)->first();
+        $product = Product::with('productImages', 'productVarients', 'productVarients.productVarientImages', 'category', 'brands')->where('slug', $slug)->first();
 
         return new ProductResource($product);
     }
