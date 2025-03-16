@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('product_varients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->nullable();
             $table->foreignId('product_id')->nullable();
             $table->string('size')->nullable();
             $table->string('color')->nullable();
