@@ -8,6 +8,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVarient;
+use App\Models\RentalProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -69,6 +70,15 @@ class ProductController extends Controller
 
                 if ($request->hasFile('product_image')) {
                     $this->uploadProductImages($request, $product);
+                }
+
+                if ($request->has('rental_price')) {
+                    RentalProduct::create([
+                        'product_id' => $product->id,
+                        'rental_price' => $request->rental_price,
+                        'rental_duration' => $request->rental_duration,
+                        'rental_type' => $request->rental_type,
+                    ]);
                 }
 
                 return $product;
