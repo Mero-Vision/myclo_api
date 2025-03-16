@@ -38,15 +38,6 @@ class ProductStoreRequest extends FormRequest
             'product_image.*' => 'mimes:jpg,jpeg,png,bmp,gif,svg|max:2048',
 
             // 'varients' => 'required_if:has_varient,true|array',
-            'varients.*.size' => 'required_if:has_varient,true|string',
-            'varients.*.color' => 'required_if:has_varient,true|string',
-            'varients.*.varient_selling_price' => 'required_if:has_varient,true|numeric',
-            'varients.*.varient_cross_price' => 'nullable|numeric',
-            'varients.*.varient_unit_price' => 'nullable|numeric',
-            'varients.*.varient_stock_quantity' => 'required_if:has_varient,true|integer',
-            'varients.*.varient_sku' => 'required_if:has_varient,true|string|unique:product_varients,sku',
-            'varients.*.images' => 'nullable|array',
-            'varients.*.images.*.url' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
         ];
     }
 

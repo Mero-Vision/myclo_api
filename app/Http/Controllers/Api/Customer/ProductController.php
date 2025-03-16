@@ -101,7 +101,6 @@ class ProductController extends Controller
             'stock_quantity' => $request->stock_quantity,
             'sku' => $request->sku,
             'allow_negative_stock' => $request->allow_negative_stock,
-            'has_varient' => $request->has_varient,
             'status' => $request->status
         ]);
     }
