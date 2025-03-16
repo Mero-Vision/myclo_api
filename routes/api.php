@@ -57,10 +57,11 @@ Route::middleware(['auth:api'])->group(function () {
     Route::put('shipping-details/update-status/{id}', [ShippingDetailController::class, 'updateStatus']);
     Route::delete('shipping-details/{id}', [ShippingDetailController::class, 'destroy']);
 
-    
+
     Route::get('orders', [OrderController::class, 'index']);
     Route::post('orders', [OrderController::class, 'store']);
 
-    Route::get('my-products', [ProductController::class, 'index']);
+    Route::post('products', [ProductController::class, 'store']);
 
+    Route::get('my-products', [ProductController::class, 'index']);
 });
