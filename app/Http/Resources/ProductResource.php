@@ -43,7 +43,6 @@ class ProductResource extends JsonResource
             'stock_quantity'=>$this->stock_quantity,
             'sku'=>$this->sku,
             'allow_negative_stock'=>$this->allow_negative_stock,
-            'has_varient'=>$this->has_varient,
             'product_weight'=>$this->product_weight,
             'status'=>$this->status,
             'created_at'=>$this->created_at,
@@ -51,7 +50,6 @@ class ProductResource extends JsonResource
             'category'=>new CategoryResource($this->whenLoaded('category')),
             'brand'=>new BrandResource($this->whenLoaded('brands')),
             'product_images'=>ProductImageResource::collection($this->whenLoaded('productImages')),
-            'product_varient'=>ProductVarientResource::collection($this->whenLoaded('productVarients')),
             'wishlist' => $wishlist ,
 
 

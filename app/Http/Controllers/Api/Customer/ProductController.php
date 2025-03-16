@@ -64,10 +64,6 @@ class ProductController extends Controller
             $product = DB::transaction(function () use ($request) {
                 $product = $this->createProduct($request);
 
-                if ($request->has_varient) {
-                    $this->createVariants($request, $product);
-                }
-
                 if ($request->hasFile('product_image')) {
                     $this->uploadProductImages($request, $product);
                 }
@@ -108,40 +104,6 @@ class ProductController extends Controller
             'has_varient' => $request->has_varient,
             'status' => $request->status
         ]);
-    }
-
-    protected function createVariants($request, $product)
-    {
-        foreach ($request->varients as $variant) {
-            $productVariant = ProductVarient::create([
-                'client_id' => Auth::user()->id,
-                'product_id' => $product->id,
-                'size' => $variant['size'],
-                'color' => $variant['color'],
-                'selling_price' => $variant['varient_selling_price'],
-                'cross_price' => $variant['varient_cross_price'],
-                'unit_price' => $variant['varient_unit_price'],
-                'stock_quantity' => $variant['varient_stock_quantity'],
-                'sku' => $variant['varient_sku'],
-            ]);
-
-            if (isset($variant['images']) && is_array($variant['images'])) {
-                $this->uploadVariantImages($variant['images'], $productVariant);
-            }
-        }
-    }
-
-    protected function uploadVariantImages($images, $productVariant)
-    {
-        foreach ($images as $image) {
-            $imageModel = new ProductImage([
-                'product_varient_id' => $productVariant->id,
-                'image_type' => 'variant',
-                'is_primary' => false,
-            ]);
-            $imageModel->save();
-            $imageModel->addMedia($image['url'])->toMediaCollection('product_varient_image');
-        }
     }
 
     protected function uploadProductImages($request, $product)
