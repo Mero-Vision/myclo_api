@@ -24,7 +24,7 @@ class ProductController extends Controller
         $search_keyword = request()->query('search_keyword');
 
 
-        $products = Product::with('productImages')->when($search_keyword, function ($query) use ($search_keyword) {
+        $products = Product::with('productImages','rentalProduct')->when($search_keyword, function ($query) use ($search_keyword) {
             $query->where('name', 'like', '%' . $search_keyword . '%');
         })->latest();
 
@@ -43,7 +43,7 @@ class ProductController extends Controller
      */
     public function show(string $slug)
     {
-        $product = Product::with('productImages','category')->where('slug', $slug)->first();
+        $product = Product::with('productImages','category','rentalProduct')->where('slug', $slug)->first();
 
         return new ProductResource($product);
     }

@@ -18,7 +18,7 @@ class AdminSeeder extends Seeder
     {
         $userData = [
             'name' => 'Admin',
-            'email' => 'info@myclo.net',
+            'email' => 'info@myclo.info',
             'password' => Hash::make('Password'),
             'email_verified_at' => Carbon::now()
         ];

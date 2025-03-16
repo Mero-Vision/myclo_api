@@ -50,6 +50,7 @@ class ProductResource extends JsonResource
             'category'=>new CategoryResource($this->whenLoaded('category')),
             'brand'=>new BrandResource($this->whenLoaded('brands')),
             'product_images'=>ProductImageResource::collection($this->whenLoaded('productImages')),
+            'rental_product'=>new RentalProductResource($this->whenLoaded('rentalProduct')),
             'wishlist' => $wishlist ,
 
 

@@ -22,6 +22,10 @@ class Product extends BaseModel
         return $this->hasMany(ProductVarient::class,'product_id');
     }
 
+    public function rentalProduct(){
+        return $this->hasMany(RentalProduct::class,'product_id');
+    }
+
     public function productImages(){
         return $this->hasMany(ProductImage::class,'product_id');
     }
