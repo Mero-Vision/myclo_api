@@ -27,9 +27,7 @@ class OrderController extends Controller
             'orderItems',
             'orderItems.products',
             'orderItems.products.productImages',
-            'orderItems',
-            'orderItems.productVarients',
-            'orderItems.productVarients.productVarientImages'
+            'orderItems'
         )->latest();
 
         $pagination = $pagination_limit ? $orders->paginate($pagination_limit) : $orders->get();

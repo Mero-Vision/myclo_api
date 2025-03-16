@@ -17,13 +17,15 @@ class DashboardController extends Controller
    public function index()
    {
 
-      $countCustomer = User::role('customer')->count();
+      $startDate = Carbon::now()->subDays(30);
 
-
-      $totalOrders = Order::count();
-
-
-      $totalRevenue = Order::sum('total_amount') ?? 0;
+      $countCustomer = User::role('customer')
+          ->where('created_at', '>=', $startDate)
+          ->count();
+      $totalOrders = Order::where('created_at', '>=', $startDate)
+          ->count();
+      $totalRevenue = Order::where('created_at', '>=', $startDate)
+          ->sum('total_amount') ?? 0;
 
 
       $dateRange = [];
@@ -47,21 +49,70 @@ class DashboardController extends Controller
          ];
       });
 
+
+      // Fetch net profit data
+      $netProfit = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+          ->where('order_items.created_at', '>=', Carbon::now()->subDays(29)->startOfDay())
+          ->selectRaw("DATE(order_items.created_at) as day, SUM((products.unit_price) * order_items.quantity) as profit")
+          ->groupBy('day')
+          ->orderBy('day', 'asc')
+          ->get()
+          ->keyBy('day');
+      
+          $netProfitGraphData = collect($dateRange)->map(function ($date) use ($netProfit) {
+            return [
+               'day' => $date,
+               'total' => $netProfit->has($date) ? $netProfit->get($date)->profit : 0,
+            ];
+         });
+
       $popularProducts = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
-      ->select('products.id', 'products.name', DB::raw('COUNT(order_items.product_id) as order_count'))
-      ->groupBy('products.id', 'products.name')
-      ->orderByDesc('order_count')
-      ->limit(15)
-      ->with('products')
-      ->get();
+         ->select(
+            'products.id',
+            'products.name',
+            DB::raw('COUNT(order_items.product_id) as order_count'),
+            DB::raw('SUM(order_items.quantity * order_items.price) as total')
+         )
+         ->groupBy('products.id', 'products.name')
+         ->orderByDesc('order_count')
+         ->limit(3)
+         ->get();
+
+         $popularProductCategories = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+         ->join('categories', 'categories.id', '=', 'products.category_id') // Correct join condition
+         ->select(
+             'categories.id',
+             'categories.name',
+             DB::raw('COUNT(order_items.product_id) as order_count'),
+             DB::raw('SUM(order_items.quantity * order_items.price) as total')
+         )
+         ->groupBy('categories.id', 'categories.name') // Group by category fields
+         ->orderByDesc('total')
+         ->limit(3)
+         ->get();
+
+         $topSellingProducts = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+         ->select(
+            'products.id',
+            'products.name',
+            DB::raw('COUNT(order_items.product_id) as order_count'),
+            DB::raw('SUM(order_items.quantity * order_items.price) as total')
+         )
+         ->groupBy('products.id', 'products.name')
+         ->orderByDesc('total')
+         ->limit(3)
+         ->get();
 
 
       return responseSuccess([
-         'total_customer' => $countCustomer,
-         'total_order' => $totalOrders,
-         'total_revenue' => $totalRevenue,
+         'last_30_days_customer' => $countCustomer,
+         'last_30_days_order' => $totalOrders,
+         'last_30_days_revenue' => $totalRevenue,
          'revenue_graph' => $revenueGraphData,
-         'popular_products'=>PopularProductResource::collection($popularProducts)
+         'net_profit_graph_data'=>$netProfitGraphData,
+         'top_category_by_revenue'=>$popularProductCategories,
+         'popular_products' => PopularProductResource::collection($popularProducts),
+         'top_selling_products'=>$topSellingProducts
       ]);
    }
 }
