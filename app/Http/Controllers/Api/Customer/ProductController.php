@@ -68,7 +68,7 @@ class ProductController extends Controller
                     $this->uploadProductImages($request, $product);
                 }
 
-                if ($request->has('rental_price')) {
+                if ($request->has('rental_price') && $request->filled('rental_price')) {
                     RentalProduct::create([
                         'product_id' => $product->id,
                         'rental_price' => $request->rental_price,
