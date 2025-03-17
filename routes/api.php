@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Customer\CartController;
 use App\Http\Controllers\Api\Customer\CategoryController;
 use App\Http\Controllers\Api\Customer\CustomerController;
 use App\Http\Controllers\Api\Customer\OrderController;
+use App\Http\Controllers\Api\Customer\PaymentOptionController;
 use App\Http\Controllers\Api\Customer\ProductController;
 use App\Http\Controllers\Api\Customer\ShippingDetailController;
 use App\Http\Controllers\Api\Customer\WishlistController;
@@ -64,4 +65,6 @@ Route::middleware(['auth:api'])->group(function () {
     Route::post('products', [ProductController::class, 'store']);
 
     Route::get('my-products', [ProductController::class, 'index']);
+    Route::get('payment-options', [PaymentOptionController::class, 'index']);
+
 });
