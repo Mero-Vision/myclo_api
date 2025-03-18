@@ -69,13 +69,6 @@ class OrderController extends Controller
 
                         $cart = Cart::where('user_id', Auth::user()->id)
                             ->where('product_id', $order_item['product_id'])
-                            ->where(function ($query) use ($order_item) {
-                                if ($order_item['product_varient_id'] === null) {
-                                    $query->whereNull('product_varient_id');
-                                } else {
-                                    $query->where('product_varient_id', $order_item['product_varient_id']);
-                                }
-                            })
                             ->first();
 
                         if ($cart) {
