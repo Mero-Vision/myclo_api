@@ -10,6 +10,30 @@ use Illuminate\Support\Facades\Auth;
 
 class ProductSwapController extends Controller
 {
+
+    public function getRequesterSwaps()
+    {
+        $swaps = ProductSwap::with(['owner', 'requesterProduct', 'ownerProduct'])
+            ->where('requester_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return responseSuccess($swaps);
+    }
+
+    /**
+     * Get the list of swap requests where the user is the owner.
+     */
+    public function getOwnerSwaps()
+    {
+        $swaps = ProductSwap::with(['requester', 'requesterProduct', 'ownerProduct'])
+            ->where('owner_id', Auth::id())
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return responseSuccess($swaps);
+    }
+
     public function requestSwap(Request $request)
     {
         $request->validate([
@@ -19,7 +43,7 @@ class ProductSwapController extends Controller
 
         $ownerProduct = Product::find($request->owner_product_id);
 
-        $productSwap=ProductSwap::create([
+        $productSwap = ProductSwap::create([
             'requester_id' => Auth::id(),
             'owner_id' => $ownerProduct->client_id,
             'requester_product_id' => $request->requester_product_id,
@@ -27,7 +51,7 @@ class ProductSwapController extends Controller
             'swap_status' => 'pending',
         ]);
 
-        return responseSuccess($productSwap,200,'Swap request sent successfully.');
+        return responseSuccess($productSwap, 200, 'Swap request sent successfully.');
     }
 
     public function acceptSwap($id)
@@ -50,7 +74,7 @@ class ProductSwapController extends Controller
 
         $swap->update(['swap_status' => 'accepted']);
 
-        return responseSuccess($swap,200,'Swap accepted and products exchanged.');
+        return responseSuccess($swap, 200, 'Swap accepted and products exchanged.');
     }
 
     public function rejectSwap($id)
@@ -62,6 +86,6 @@ class ProductSwapController extends Controller
 
         $swap->update(['swap_status' => 'rejected']);
 
-        return responseSuccess($swap,200,'Swap request rejected.');
+        return responseSuccess($swap, 200, 'Swap request rejected.');
     }
 }
