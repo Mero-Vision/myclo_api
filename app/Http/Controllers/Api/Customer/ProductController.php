@@ -42,7 +42,8 @@ class ProductController extends Controller
         $search_keyword = request()->query('search_keyword');
 
 
-        $products = Product::with('productImages','category','rentalProduct')->where('client_id',Auth::user()->id)->when($search_keyword, function ($query) use ($search_keyword) {
+        $products = Product::with('productImages','category','rentalProduct')
+        ->where('created_user_id',Auth::user()->id)->when($search_keyword, function ($query) use ($search_keyword) {
             $query->where('name', 'like', '%' . $search_keyword . '%');
         })->latest();
 

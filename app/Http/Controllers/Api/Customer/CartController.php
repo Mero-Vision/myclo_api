@@ -20,7 +20,7 @@ class CartController extends Controller
 
         $pagination_limit = request()->query('pagination_limit');
 
-        $carts = Cart::with('products', 'products.productImages', 'productVarients', 'productVarients.productVarientImages')->latest();
+        $carts = Cart::with('products', 'products.productImages', 'productVarients', 'productVarients.productVarientImages')->where('user_id',Auth::user()->id)->latest();
 
         $pagination = $pagination_limit ? $carts->paginate($pagination_limit) : $carts->get();
 
