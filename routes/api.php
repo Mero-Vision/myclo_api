@@ -65,7 +65,7 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::post('products', [ProductController::class, 'store']);
 
-    Route::get('my-products', [ProductController::class, 'index']);
+    Route::get('my-products', [ProductController::class, 'myproducts']);
     Route::get('payment-options', [PaymentOptionController::class, 'index']);
 
     Route::get('swaps/requester', [ProductSwapController::class, 'getRequesterSwaps']);
