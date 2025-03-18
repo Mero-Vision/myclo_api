@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Customer\CustomerController;
 use App\Http\Controllers\Api\Customer\OrderController;
 use App\Http\Controllers\Api\Customer\PaymentOptionController;
 use App\Http\Controllers\Api\Customer\ProductController;
+use App\Http\Controllers\Api\Customer\ProductSwapController;
 use App\Http\Controllers\Api\Customer\ShippingDetailController;
 use App\Http\Controllers\Api\Customer\WishlistController;
 use Illuminate\Http\Request;
@@ -66,5 +67,9 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::get('my-products', [ProductController::class, 'index']);
     Route::get('payment-options', [PaymentOptionController::class, 'index']);
+
+    Route::post('/swap/request', [ProductSwapController::class, 'requestSwap'])->name('swap.request');
+    Route::post('/swap/accept/{id}', [ProductSwapController::class, 'acceptSwap'])->name('swap.accept');
+    Route::post('/swap/reject/{id}', [ProductSwapController::class, 'rejectSwap'])->name('swap.reject');
 
 });
