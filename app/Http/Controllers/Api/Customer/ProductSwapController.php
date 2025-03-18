@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductSWap;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class ProductSwapController extends Controller
 {
@@ -43,15 +44,26 @@ class ProductSwapController extends Controller
 
         $ownerProduct = Product::find($request->owner_product_id);
 
-        $productSwap = ProductSwap::create([
-            'requester_id' => Auth::id(),
-            'owner_id' => $ownerProduct->client_id,
-            'requester_product_id' => $request->requester_product_id,
-            'owner_product_id' => $request->owner_product_id,
-            'swap_status' => 'pending',
-        ]);
+        try {
 
-        return responseSuccess($productSwap, 200, 'Swap request sent successfully.');
+            $productSwap = DB::transaction(function () use ($ownerProduct, $request) {
+
+                $productSwap = ProductSwap::create([
+                    'requester_id' => Auth::id(),
+                    'owner_id' => $ownerProduct->client_id,
+                    'requester_product_id' => $request->requester_product_id,
+                    'owner_product_id' => $request->owner_product_id,
+                    'swap_status' => 'pending',
+                ]);
+
+                return $productSwap;
+            });
+            if ($productSwap) {
+                return responseSuccess($productSwap, 200, 'Swap request sent successfully.');
+            }
+        } catch (\Exception $e) {
+            return responseError($e->getMessage(), 500);
+        }
     }
 
     public function acceptSwap($id)
