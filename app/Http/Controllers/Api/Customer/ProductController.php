@@ -41,7 +41,7 @@ class ProductController extends Controller
 
 
 
-        $products = Product::with('productImages', 'category','rentalProduct','reviews')->when($search_keyword, function ($query) use ($search_keyword) {
+        $products = Product::with('productImages', 'category','rentalProduct')->when($search_keyword, function ($query) use ($search_keyword) {
             $query->where('name', 'like', '%' . $search_keyword . '%');
         })->when($limit, function ($query) use ($limit) {
             $query->limit($limit);
@@ -59,7 +59,7 @@ class ProductController extends Controller
         $search_keyword = request()->query('search_keyword');
 
 
-        $products = Product::with('productImages','category','rentalProduct','reviews')
+        $products = Product::with('productImages','category','rentalProduct')
         ->where('created_user_id',Auth::user()->id)->when($search_keyword, function ($query) use ($search_keyword) {
             $query->where('name', 'like', '%' . $search_keyword . '%');
         })->latest();
