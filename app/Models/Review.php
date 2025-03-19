@@ -11,6 +11,11 @@ class Review extends BaseModel
         return $this->belongsTo(Product::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
