@@ -15,6 +15,23 @@ use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
+
+    public function recommendedProducts()
+    {
+
+        $pagination_limit = request()->query('pagination_limit');
+        $limit = request()->query('limit');
+
+        $products = Product::orderByDesc('review_count')->with('productImages', 'category','rentalProduct','reviews')->when($limit, function ($query) use ($limit) {
+            $query->limit($limit);
+        })->latest();
+
+        $pagination = $pagination_limit ? $products->paginate($pagination_limit) : $products->get();
+
+        return ProductResource::collection($pagination);
+    }
+
+    
     public function index()
     {
 
