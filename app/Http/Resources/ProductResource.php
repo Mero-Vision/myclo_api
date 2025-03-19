@@ -47,6 +47,8 @@ class ProductResource extends JsonResource
             'status'=>$this->status,
             'created_at'=>$this->created_at,
             'updated_at'=>$this->updated_at,
+            'review_count'=>$this->review_count,
+            'average_rating'=>$this->average_rating,
             'category'=>new CategoryResource($this->whenLoaded('category')),
             'brand'=>new BrandResource($this->whenLoaded('brands')),
             'product_images'=>ProductImageResource::collection($this->whenLoaded('productImages')),
