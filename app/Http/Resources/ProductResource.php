@@ -52,6 +52,7 @@ class ProductResource extends JsonResource
             'product_images'=>ProductImageResource::collection($this->whenLoaded('productImages')),
             'rental_product'=>new RentalProductResource($this->whenLoaded('rentalProduct')),
             'wishlist' => $wishlist ,
+            'review'=>ReviewResource::collection($this->whenLoaded('reviews'))
 
 
         ];

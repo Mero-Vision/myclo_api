@@ -41,4 +41,16 @@ class Product extends BaseModel
     public function brands(){
         return $this->belongsTo(Brand::class,'brand_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function updateReviewStats()
+    {
+        $this->review_count = $this->reviews()->count();
+        $this->average_rating = $this->reviews()->avg('rating') ?: 0;
+        $this->save();
+    }
 }
