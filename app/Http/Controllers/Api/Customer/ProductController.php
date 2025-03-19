@@ -22,7 +22,7 @@ class ProductController extends Controller
         $pagination_limit = request()->query('pagination_limit');
         $limit = request()->query('limit');
 
-        $products = Product::orderByDesc('review_count')->with('productImages', 'category','rentalProduct','reviews')->when($limit, function ($query) use ($limit) {
+        $products = Product::orderByDesc('review_count')->with('productImages', 'category','rentalProduct')->when($limit, function ($query) use ($limit) {
             $query->limit($limit);
         })->latest();
 
