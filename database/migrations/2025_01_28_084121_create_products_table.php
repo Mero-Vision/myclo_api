@@ -22,9 +22,7 @@ return new class extends Migration
             $table->decimal('selling_price', 16, 2)->nullable();
             $table->decimal('cross_price', 16, 2)->nullable();
             $table->decimal('unit_price', 16, 2)->nullable();
-            $table->decimal('stock_quantity',16,2)->nullable();
             $table->string('sku')->nullable(); 
-            $table->boolean('allow_negative_stock')->default(true);
             $table->boolean('has_varient')->default(false);
             $table->string('product_weight')->nullable();
             $table->string('status')->nullable();

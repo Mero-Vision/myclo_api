@@ -116,9 +116,7 @@ class ProductController extends Controller
             'selling_price' => $request->selling_price,
             'cross_price' => $request->cross_price,
             'unit_price' => $request->unit_price,
-            'stock_quantity' => $request->stock_quantity,
             'sku' => $request->sku,
-            'allow_negative_stock' => $request->allow_negative_stock,
             'status' => $request->status
         ]);
     }

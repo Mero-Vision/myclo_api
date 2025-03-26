@@ -7,6 +7,7 @@ use App\Http\Resources\OrderResource;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -70,6 +71,8 @@ class OrderController extends Controller
                         $cart = Cart::where('user_id', Auth::user()->id)
                             ->where('product_id', $order_item['product_id'])
                             ->first();
+
+                        // Product::whereIn('id', $order_item['product_id'])->update(['status' => 'inactive']);
 
                         if ($cart) {
                             $cart->delete();
